@@ -22,7 +22,7 @@ func main() {
 	}
 }
 
-//Operation is a structure for operations data.
+//Operation : Operation is a structure for operations data.
 type (
 	Operation struct {
 		UnitID                  *string `db:"unit_id" json:"unitID"`
@@ -39,7 +39,7 @@ type (
 	}
 )
 
-//Coupon is a structure for coupon data.
+//Coupon : Coupon is a structure for coupon data.
 type (
 	Coupon struct {
 		UnitID    *string `db:"unit_id" json:"unitID"`
@@ -55,7 +55,7 @@ type (
 	}
 )
 
-//Void is a structure for void data.
+//Void : Void is a structure for void data.
 type (
 	Void struct {
 		UnitID            *string `db:"unit_id" json:"unitID"`
@@ -77,7 +77,7 @@ type (
 	}
 )
 
-//Operations is a function for writing and requesting date data.  The url accepts arguments for begin date, end date, and store units.
+//Operations : Operations is a function for writing and requesting date data.  The url accepts arguments for begin date, end date, and store units.
 func Operations(w http.ResponseWriter, r *http.Request) {
 	begdate := r.URL.Query().Get("begdate")
 	enddate := r.URL.Query().Get("enddate")
@@ -95,7 +95,7 @@ func Operations(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, string(json))
 }
 
-//Coupons is a function for writing and requestion coupons data.  The url accepts arguments for begin date, end date, and store units.
+//Coupons : Coupons is a function for writing and requestion coupons data.  The url accepts arguments for begin date, end date, and store units.
 func Coupons(w http.ResponseWriter, r *http.Request) {
 	begdate := r.URL.Query().Get("begdate")
 	enddate := r.URL.Query().Get("enddate")
@@ -114,7 +114,7 @@ func Coupons(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, string(json))
 }
 
-//Voids is a function for writing and requestion void data.  The url accepts arguments for begin date, end date, and store units.
+//Voids : Voids is a function for writing and requestion void data.  The url accepts arguments for begin date, end date, and store units.
 func Voids(w http.ResponseWriter, r *http.Request) {
 	begdate := r.URL.Query().Get("begdate")
 	enddate := r.URL.Query().Get("enddate")
@@ -133,28 +133,25 @@ func Voids(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, string(json))
 }
 
-//DB is a function that connects to SQL server.
+//DB : DB is a function that connects to SQL server.
 func DB() *sqlx.DB {
+	serv := os.Getenv("DB_SERVER")
+	user := os.Getenv("DB_USER")
 	pass := os.Getenv("DB_PASS")
-	db, err := sqlx.Connect("mssql", fmt.Sprintf("server=192.168.1.34;user id=sa;password=%s;database=quikserve;log64;encrypt=disable", pass))
+	database := os.Getenv("DB_DATABASE")
+
+	db, err := sqlx.Connect("mssql", fmt.Sprintf(`server=%s;user id=%s;password=%s;database=%s;log64;encrypt=disable`, serv, user, pass, database))
+
 	if err != nil {
 		log.Println(err)
 	}
 	return db
 }
 
-// func DB() *sqlx.DB {
-// 	db, err := sqlx.Connect("mssql", "server=192.168.1.34;user id=sa;password=1234;database=quikserve;log64;encrypt=disable")
-// 	if err != nil {
-// 		log.Println(err)
-// 	}
-// 	return db
-// }
-
 /*
-http://localhost:5000/operations?begdate=10/01/2017&enddate=10/02/2017&units=2,3,5,6
+http://localhost:5000/operations?begdate=02/01/2018&enddate=02/02/2018&units=2,3,5,6
 
-http://localhost:5000/coupons?begdate=10/01/2017&enddate=10/02/2017&units=2,3,5,6
+http://localhost:5000/coupons?begdate=02/01/2018&enddate=02/02/2018&units=2,3,5,6
 
-http://localhost:5000/voids?begdate=10/01/2017&enddate=10/02/2017&units=2,3,5,6
+http://localhost:5000/voids?begdate=02/01/2018&enddate=02/02/2018&units=2,3,5,6
 */
