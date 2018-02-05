@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	//"github.com/terryberlin/web-reports/reportstructs"
 	//"github.com/terryberlin/web-reports/reportstructs/operationsreports"
 	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/jmoiron/sqlx"
